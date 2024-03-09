@@ -16,7 +16,7 @@ different problems; using the `-c` flag computes the answers for you
 Each homework included below has a README file that explains what to do. Previously,
 this material had been included in the chapters themselves, but that was making the book too long.
 Now, all that is left in the book are the questions you might want to answer with the simulator;
-the details on how to run code are all in the README. 
+the details on how to run code are all in the README.
 
 Thus, your task: read a chapter, look at the questions at the end of the chapter,
 and try to answer them by doing the homework. Some require a simulator (written in Python);
@@ -24,12 +24,15 @@ those are available by below. Some others require you to write some code. At thi
 relevant README is a good idea. Still others require some other stuff, like writing C code to accomplish some task.
 
 To use these, the best thing to do is to clone the homeworks. For example:
+
 ```sh
 prompt> git clone https://github.com/remzi-arpacidusseau/ostep-homework/
 prompt> cd file-disks
 prompt> ./disk.py -h
-```
-然后你可以得到以下内容:
+
+然后你会得到以下内容:
+Usage: disk.py [options]
+
 Options:
   -h, --help            show this help message and exit
   -s SEED, --seed=SEED  Random seed
@@ -54,6 +57,7 @@ Options:
   -L LATEADDRDESC, --lateAddrDesc=LATEADDRDESC
                         Num requests, max request (-1->all), min request
   -c, --compute         Compute the answers
+```
 
 # Introduction
 
@@ -69,7 +73,7 @@ Chapter | What To Do
 [Process API](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-api.pdf) | Run [fork.py](cpu-api) and write some code
 [Direct Execution](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-mechanisms.pdf) | Write some code
 [Scheduling Basics](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched.pdf) | Run [scheduler.py](cpu-sched)
-[MLFQ Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-mlfq.pdf)	| Run [mlfq.py](cpu-sched-mlfq)
+[MLFQ Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-mlfq.pdf) | Run [mlfq.py](cpu-sched-mlfq)
 [Lottery Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-lottery.pdf) | Run [lottery.py](cpu-sched-lottery)
 [Multiprocessor Scheduling](http://www.cs.wisc.edu/~remzi/OSTEP/cpu-sched-multi.pdf) | Run [multi.py](cpu-sched-multi)
 [Abstraction: Address Spaces](http://www.cs.wisc.edu/~remzi/OSTEP/vm-intro.pdf) | Write some code
@@ -89,8 +93,8 @@ Chapter | What To Do
 Chapter | What To Do
 --------|-----------
 [Threads Intro](http://www.cs.wisc.edu/~remzi/OSTEP/threads-intro.pdf) | Run [x86.py](threads-intro)
-[Thread API](http://www.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf)	| Run [some C code](threads-api)
-[Locks](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf)	| Run [x86.py](threads-locks)
+[Thread API](http://www.cs.wisc.edu/~remzi/OSTEP/threads-api.pdf) | Run [some C code](threads-api)
+[Locks](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks.pdf) | Run [x86.py](threads-locks)
 [Lock Usage](http://www.cs.wisc.edu/~remzi/OSTEP/threads-locks-usage.pdf) | Write some code
 [Condition Variables](http://www.cs.wisc.edu/~remzi/OSTEP/threads-cv.pdf) | Run [some C code](threads-cv)
 [Semaphores](http://www.cs.wisc.edu/~remzi/OSTEP/threads-sema.pdf) | Read and write [some code](threads-sema)

@@ -1,9 +1,7 @@
 
 # Overview
 
-This program, called process-run.py, allows you to see how the state of a
-process state changes as it runs on a CPU. As described in the chapter, 
-processes can be in a few different states:
+程序```process-run.py```,允许你看到一个进程状态如何在 CPU 上运行时改变.如章节中所述，进程可以处于几种不同的状态：
 
 ```sh
 RUNNING - the process is using the CPU right now
@@ -14,62 +12,43 @@ BLOCKED - the process is waiting on I/O
 DONE    - the process is finished executing
 ```
 
-In this homework, we'll see how these process states change as a program
-runs, and thus learn a little bit better how these things work.
-
-To run the program and get its options, do this:
+在这个```homework```中,我们会看到当一共程序运行的时候,进程状态是如何变化的.
 
 ```sh
-prompt> ./process-run.py -h
-```
+prompt> python3 process-run.py -h
 
-If this doesn't work, type `python` before the command, like this:
-
-```sh
-prompt> python process-run.py -h
-```
-
-What you should see is this:
-
-```sh
-Usage: process-run.py [options]
+Usage: process-run.py [参数]
 
 Options:
-  -h, --help            show this help message and exit
-  -s SEED, --seed=SEED  the random seed
-  -l PROCESS_LIST, --processlist=PROCESS_LIST
-                        a comma-separated list of processes to run, in the
-                        form X1:Y1,X2:Y2,... where X is the number of
-                        instructions that process should run, and Y the
-                        chances (from 0 to 100) that an instruction will use
-                        the CPU or issue an IO
-  -L IO_LENGTH, --iolength=IO_LENGTH
-                        how long an IO takes
-  -S PROCESS_SWITCH_BEHAVIOR, --switch=PROCESS_SWITCH_BEHAVIOR
-                        when to switch between processes: SWITCH_ON_IO,
-                        SWITCH_ON_END
-  -I IO_DONE_BEHAVIOR, --iodone=IO_DONE_BEHAVIOR
-                        type of behavior when IO ends: IO_RUN_LATER,
-                        IO_RUN_IMMEDIATE
-  -c                    compute answers for me
-  -p, --printstats      print statistics at end; only useful with -c flag
-                        (otherwise stats are not printed)
+  -h, --help                                显示帮助信息,然后退出程序
+
+  -s xxx, --seed=xxx                        设置随机种子,你可以输入-s 123或者是-s --seed=123
+
+  -l xxx, --processlist=xxx                 设置要运行的程序,按逗号分隔,每个程序有参数X:Y
+                                            X表示进程运行的指令数量,Y指令使用CPU或者发出I/O的概率(0~100)
+
+  -L xxx, --iolength=xxx                    设置I/O操作的持续事件
+
+  -S xxx, --switch=xxx                      设置切换进程的时机, SWITCH_ON_IO,SWITCH_ON_END
+                                            分别表示在I/O操作时切换和进程结束时切换
+                                                               
+  -I xxx, --iodone=xxx                      设置I/O结束时的行为类型,IO_RUN_LATER,IO_RUN_IMMEDIATE
+                                            分别表示稍后运行和立即运行
+
+  -c                                        输出答案
+
+  -p, --printstats                          结束的时候打印统计信息,仅在使用-c时有用
 ```
 
-The most important option to understand is the PROCESS_LIST (as specified by
-the -l or --processlist flags) which specifies exactly what each running
-program (or 'process') will do. A process consists of instructions, and each
-instruction can just do one of two things: 
-- use the CPU 
-- issue an IO (and wait for it to complete)
+```-l xxx```参数准确的指定了每个正在运行的进程将做什么,一个进程由指令组成,每个指令只能做下面的其中一件事:
 
-When a process uses the CPU (and does no IO at all), it should simply
-alternate between RUNNING on the CPU or being READY to run. For example, here
-is a simple run that just has one program being run, and that program only
-uses the CPU (it does no IO).
+- use the CPU  使用CPU
+- issue an IO (and wait for it to complete)  进行I/O,并且等待它完成
+
+当一共进程使用CPU且不进行I/O操作时,它会简单的在CPU上在状态```RUNNING```和```READY```之间切换, 下面是一个具体的例子：
 
 ```sh
-prompt> ./process-run.py -l 5:100 
+prompt> python3 process-run.py -l 5:100 
 Produce a trace of what would happen when you run these processes:
 Process 0
   cpu
@@ -85,15 +64,10 @@ Important behaviors:
 prompt> 
 ```
 
-Here, the process we specified is "5:100" which means it should consist of 5
-instructions, and the chances that each instruction is a CPU instruction are
-100%. 
-
-You can see what happens to the process by using the -c flag, which computes the
-answers for you:
+我们指定```-l```的参数为```5:100```这表示这个进程包含5条指令，百分百使用CPU
 
 ```sh
-prompt> ./process-run.py -l 5:100 -c
+prompt> python3 process-run.py -l 5:100 -c
 Time     PID: 0        CPU        IOs
   1     RUN:cpu          1
   2     RUN:cpu          1
@@ -102,14 +76,10 @@ Time     PID: 0        CPU        IOs
   5     RUN:cpu          1
 ```
 
-This result is not too interesting: the process is simple in the RUN state and
-then finishes, using the CPU the whole time and thus keeping the CPU busy the
-entire run, and not doing any I/Os.
-
-Let's make it slightly more complex by running two processes:
+使用```-c```选项查看,能够看到进程在```RUN:cpu```状态下使用CPU,且没有进行I/O操作,下面我们运行一个更复杂一点的进程：
 
 ```sh
-prompt> ./process-run.py -l 5:100,5:100
+prompt> python3 process-run.py -l 5:100,5:100
 Produce a trace of what would happen when you run these processes:
 Process 0
   cpu
@@ -130,11 +100,10 @@ Important behaviors:
   After IOs, the process issuing the IO will run LATER (when it is its turn)
 ```
 
-In this case, two different processes run, each again just using the CPU. What
-happens when the operating system runs them? Let's find out:
+在这个情况下，有两个不同的进程在运行，分别是```Process0,Process1```, 当操作系统运行它们的时候就会发生一些有趣的事情：
 
 ```sh
-prompt> ./process-run.py -l 5:100,5:100 -c
+prompt> python3 process-run.py -l 5:100,5:100 -c
 Time     PID: 0     PID: 1        CPU        IOs
   1     RUN:cpu      READY          1
   2     RUN:cpu      READY          1
@@ -148,17 +117,12 @@ Time     PID: 0     PID: 1        CPU        IOs
  10        DONE    RUN:cpu          1
 ```
 
-As you can see above, first the process with "process ID" (or "PID") 0 runs,
-while process 1 is READY to run but just waits until 0 is done. When 0 is
-finished, it moves to the DONE state, while 1 runs. When 1 finishes, the trace
-is done.
-
-Let's look at one more example before getting to some questions. In this
-example, the process just issues I/O requests. We specify here that I/Os take 5
-time units to complete with the flag -L.
+这很容易理解,首先运行PID=0的进程，然后PID=1的进程处于READY状态，当PID=0的进程运行结束，另一个进程就进入RUN状态
+我们再来一个带了I/O的例子：
+以下参数的含义```-l 3:0```运行三条指令，不使用CPU(那么就是进行I/O操作), ```-L 5```设置每次I/O的时间为5s
 
 ```sh
-prompt> ./process-run.py -l 3:0 -L 5
+prompt> python3 process-run.py -l 3:0 -L 5
 Produce a trace of what would happen when you run these processes:
 Process 0
   io
@@ -173,10 +137,10 @@ Important behaviors:
   After IOs, the process issuing the IO will run LATER (when it is its turn)
 ```
 
-What do you think the execution trace will look like? Let's find out:
+进一步查看运行的信息
 
 ```sh
-prompt> ./process-run.py -l 3:0 -L 5 -c
+prompt> python3 process-run.py -l 3:0 -L 5 -c
 Time    PID: 0       CPU       IOs
   1         RUN:io             1
   2        BLOCKED                           1
@@ -201,16 +165,8 @@ Time    PID: 0       CPU       IOs
  21*   RUN:io_done             1
 ```
 
-As you can see, the program just issues three I/Os. When each I/O is issued,
-the process moves to a BLOCKED state, and while the device is busy servicing
-the I/O, the CPU is idle.
-
-To handle the completion of the I/O, one more CPU action takes place. Note
-that a single instruction to handle I/O initiation and completion is not
-particularly realistic, but just used here for simplicity.
-
-Let's print some stats (run the same command as above, but with the -p flag)
-to see some overall behaviors: 
+解释一下输出的信息，进程进行了3个I/O, 每个I/O操作用时5个time，(可以看到处在```BLOCKED```状态的time跨度)
+我们使用```-p```参数查看一下统计信息：
 
 ```sh
 Stats: Total Time 21
@@ -218,35 +174,10 @@ Stats: CPU Busy 6 (28.57%)
 Stats: IO Busy  15 (71.43%)
 ```
 
-As you can see, the trace took 21 clock ticks to run, but the CPU was
-busy less than 30% of the time. The I/O device, on the other hand, was
-quite busy. In general, we'd like to keep all the devices busy, as
-that is a better use of resources.
+三条信息表明：
+这个进程运行了21个时钟周期
+使用CPU的时钟周期为6，占比百分之28.57
+进行I/O操作的周期为15，占比百分之71.43
 
-There are a few other important flags:
-```sh
-  -s SEED, --seed=SEED  the random seed  
-    this gives you way to create a bunch of different jobs randomly
-
-  -L IO_LENGTH, --iolength=IO_LENGTH
-    this determines how long IOs take to complete (default is 5 ticks)
-
-  -S PROCESS_SWITCH_BEHAVIOR, --switch=PROCESS_SWITCH_BEHAVIOR
-                        when to switch between processes: SWITCH_ON_IO, SWITCH_ON_END
-    this determines when we switch to another process:
-    - SWITCH_ON_IO, the system will switch when a process issues an IO
-    - SWITCH_ON_END, the system will only switch when the current process is done 
-
-  -I IO_DONE_BEHAVIOR, --iodone=IO_DONE_BEHAVIOR
-                        type of behavior when IO ends: IO_RUN_LATER, IO_RUN_IMMEDIATE
-    this determines when a process runs after it issues an IO:
-    - IO_RUN_IMMEDIATE: switch to this process right now
-    - IO_RUN_LATER: switch to this process when it is natural to 
-      (e.g., depending on process-switching behavior)
-```
-
-Now go answer the questions at the back of the chapter to learn more, please.
-
-
-
-
+OK 开始你的作业吧！
+```EI PSY CONGROO```
