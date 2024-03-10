@@ -1,15 +1,11 @@
 
 # Overview
 
-This program, scheduler.py, allows you to see how different schedulers perform
-under scheduling metrics such as response time, turnaround time, and total
-wait time. Three schedulers are "implemented": FIFO, SJF, and RR.
+这个程序，scheduler.py，允许你看到在调度指标如响应时间、周转时间和总等待时间下，不同的调度器的性能如何。有三种调度器被"实现"：先进先出（FIFO），最短作业优先（SJF）和轮转（RR）。
 
-There are two steps to running the program.
+运行程序有两个步骤。
 
-First, run without the -c flag: this shows you what problem to solve without
-revealing the answers. For example, if you want to compute response,
-turnaround, and wait for three jobs using the FIFO policy, run this:
+首先，不带-c标志运行：这会显示你要解决的问题，但不会显示答案。例如，如果你想使用FIFO策略计算三个作业的响应、周转和等待时间，运行这个：
 
 ```sh
 prompt> ./scheduler.py -p FIFO -j 3 -s 100
@@ -20,10 +16,7 @@ If that doesn't work, try this:
 prompt> python ./scheduler.py -p FIFO -j 3 -s 100
 ```
 
-This specifies the FIFO policy with three jobs, and, importantly, a specific
-random seed of 100. If you want to see the solution for this exact problem,
-you have to specify this exact same random seed again. Let's run it and see
-what happens. This is what you should see:
+这指定了三个作业的FIFO策略，并且重要的是，指定了一个特定的随机种子100。如果你想看到这个确切问题的解决方案，你必须再次指定这个完全相同的随机种子。让我们运行它看看会发生什么。你应该看到的是：
 
 ```sh
 prompt> ./scheduler.py -p FIFO -j 3 -s 100
@@ -38,19 +31,11 @@ Here is the job list, with the run time of each job:
   Job 2 (length = 7)
 ```
 
-Compute the turnaround time, response time, and wait time for each job.  When
-you are done, run this program again, with the same arguments, but with -c,
-which will thus provide you with the answers. You can use -s <somenumber> or
-your own job list (-l 10,15,20 for example) to generate different problems for
-yourself.
+计算每个作业的周转时间、响应时间和等待时间。当你完成后，再次运行这个程序，使用相同的参数，但是带上-c，这将为你提供答案。你可以使用-s 或你自己的作业列表（例如-l 10,15,20）为自己生成不同的问题。
 
-As you can see from this example, three jobs are generated: job 0 of length 1,
-job 1 of length 4, and job 2 of length 7. As the program states, you can now
-use this to compute some statistics and see if you have a grip on the basic
-concepts.
+从这个例子中你可以看到，生成了三个作业：长度为1的作业0，长度为4的作业1，长度为7的作业2。如程序所述，你现在可以使用这个来计算一些统计数据，看看你是否掌握了基本概念。
 
-Once you are done, you can use the same program to "solve" the problem and see
-if you did your work correctly. To do so, use the "-c" flag. The output:
+一旦你完成，你可以使用相同的程序来"解决"问题，看看你是否正确完成了你的工作。要做到这一点，使用"-c"标志。输出：
 
 ```sh
 prompt> ./scheduler.py -p FIFO -j 3 -s 100 -c
@@ -79,27 +64,13 @@ Final statistics:
   Average -- Response: 2.00  Turnaround 6.00  Wait 2.00
 ```
 
-As you can see from the figure, the -c flag shows you what happened. Job 0 ran
-first for 1 second, Job 1 ran second for 4, and then Job 2 ran for 7
-seconds. Not too hard; it is FIFO, after all! The execution trace shows these
-results.
+从图中你可以看到，-c标志显示了发生了什么。作业0首先运行了1秒，作业1第二个运行了4秒，然后作业2运行了7秒。并不太难；毕竟，这是FIFO！执行跟踪显示了这些结果。
 
-The final statistics are useful too: they compute the "response time" (the
-time a job spends waiting after arrival before first running), the "turnaround
-time" (the time it took to complete the job since first arrival), and the
-total "wait time" (any time spent ready but not running). The stats are shown
-per job and then as an average across all jobs. Of course, you should have
-computed these things all before running with the "-c" flag!
+最后的统计数据也很有用：它们计算了"响应时间"（作业在首次运行前等待的时间），"周转时间"（从首次到达到完成作业所需的时间），和总的"等待时间"（任何在就绪但未运行的时间）。统计数据按作业显示，然后计算所有作业的平均值。当然，你应该在使用"-c"标志运行之前计算这些东西！
 
-If you want to try the same type of problem but with different inputs, try
-changing the number of jobs or the random seed or both. Different random seeds
-basically give you a way to generate an infinite number of different problems
-for yourself, and the "-c" flag lets you check your own work. Keep doing this
-until you feel like you really understand the concepts.
+如果你想尝试相同类型的问题，但是输入不同，试着改变作业数量或随机种子，或者两者都改变。不同的随机种子基本上给你提供了一种为自己生成无数不同问题的方式，"-c"标志让你检查自己的工作。继续这样做，直到你觉得你真正理解了这些概念。
 
-One other useful flag is "-l" (that's a lower-case L), which lets you specify
-the exact jobs you wish to see scheduled. For example, if you want to find out
-how SJF would perform with three jobs of lengths 5, 10, and 15, you can run:
+另一个有用的标志是"-l"（这是一个小写的L），它让你指定你希望看到的确切作业。例如，如果你想找出SJF在有三个长度为5、10和15的作业时的表现，你可以运行：
 
 ```sh
 prompt> ./scheduler.py -p SJF -l 5,10,15
@@ -113,18 +84,14 @@ Here is the job list, with the run time of each job:
 ...
 ```
 
-And then you can use -c to solve it again. Note that when you specify the
-exact jobs, there is no need to specify a random seed or the number of jobs:
-the jobs lengths are taken from your comma-separated list.
+然后你可以再次使用-c来解决它。注意，当你指定确切的作业时，无需指定随机种子或作业数量：作业长度是从你的逗号分隔的列表中获取的。
 
-Of course, more interesting things happen when you use SJF (shortest-job
-first) or even RR (round robin) schedulers. Try them and see!
+当然，当你使用SJF（最短作业优先）或者RR（轮转）调度器时，会发生更有趣的事情。试试看吧！
 
-And you can always run 
+你总是可以运行
 
 ```sh
 prompt> ./scheduler.py -h
 ```
 
-to get a complete list of flags and options (including options such as setting
-the time quantum for the RR scheduler).
+来获取完整的标志和选项列表（包括设置RR调度器的时间量子等选项）。
