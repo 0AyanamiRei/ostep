@@ -1,9 +1,6 @@
+# Overview
 
-This program, `mlfq.py`, allows you to see how the MLFQ scheduler
-presented in this chapter behaves. As before, you can use this to generate
-problems for yourself using random seeds, or use it to construct a
-carefully-designed experiment to see how MLFQ works under different
-circumstances. To run the program, type:
+这个程序，mlfq.py，允许你看到本章介绍的MLFQ调度器的行为。和以前一样，你可以使用它来通过随机种子为自己生成问题，或者使用它来构建一个精心设计的实验，以观察MLFQ在不同情况下的工作方式。要运行程序，输入：
 
 ```sh
 prompt> ./mlfq.py
@@ -54,10 +51,7 @@ Options:
   -c                    compute answers for me
 ```
 
-There are a few different ways to use the simulator. One way is to generate
-some random jobs and see if you can figure out how they will behave given the
-MLFQ scheduler. For example, if you wanted to create a randomly-generated
-three-job workload, you would simply type:
+有几种不同的方式可以使用这个模拟器。一种方式是生成一些随机的作业，看看在MLFQ调度器的控制下它们会如何表现。例如，如果你想创建一个随机生成的三个作业的工作负载，你只需要输入：
 
 ```sh
 prompt> ./mlfq.py -j 3
@@ -99,10 +93,7 @@ times for each of the jobs.
 Use the -c flag to get the exact results when you are finished.
 ```
 
-This generates a random workload of three jobs (as specified), on the default
-number of queues with a number of default settings. If you run again with the
-solve flag on (-c), you'll see the same print out as above, plus the
-following:
+这将在默认数量的队列上生成三个作业（如指定）的随机工作负载，并使用一些默认设置。如果你再次运行并开启解决标志（-c），你将看到与上面相同的输出，以及以下内容：
 
 ```sh
 Execution Trace:
@@ -132,24 +123,9 @@ Final statistics:
   Avg  2: startTime n/a - response 5.33 - turnaround 178.00
 ```
 
-The trace shows exactly, on a millisecond-by-millisecond time scale, what the
-scheduler decided to do. In this example, it begins by running Job 0 for 7 ms
-until Job 0 issues an I/O; this is entirely predictable, as Job 0's I/O
-frequency is set to 7 ms, meaning that every 7 ms it runs, it will issue an
-I/O and wait for it to complete before continuing. At that point, the
-scheduler switches to Job 1, which only runs 2 ms before issuing an I/O. 
-The scheduler prints the entire execution trace in this manner, and 
-finally also computes the response and turnaround times for each job
-as well as an average.
+跟踪精确地显示了调度器在毫秒级时间尺度上的决策。在这个例子中，它开始运行作业0，持续7毫秒，直到作业0发出一个I/O；这是完全可以预测的，因为作业0的I/O频率设置为7毫秒，意味着每运行7毫秒，它就会发出一个I/O，并等待它完成后再继续。在那个时候，调度器切换到作业1，它只运行2毫秒就发出一个I/O。调度器以这种方式打印整个执行跟踪，并最终也计算每个作业的响应时间和周转时间，以及平均值。
 
-You can also control various other aspects of the simulation. For example, you
-can specify how many queues you'd like to have in the system (-n) and what the
-quantum length should be for all of those queues (-q); if you want even more
-control and varied quanta length per queue, you can instead specify the length
-of the quantum (time slice) for each queue with -Q, e.g., -Q 10,20,30]
-simulates a scheduler with three queues, with the highest-priority queue
-having a 10-ms time slice, the next-highest a 20-ms time-slice, and the
-low-priority queue a 30-ms time slice.
+你也可以控制模拟的各种其他方面。例如，你可以指定你希望在系统中有多少队列（-n）以及所有这些队列的量子长度应该是多少（-q）；如果你希望有更多的控制和每个队列的量子长度不同，你可以用-Q来指定每个队列的量子（时间片）的长度，例如，-Q 10,20,30]模拟一个有三个队列的调度器，最高优先级的队列有一个10毫秒的时间片，次高优先级的队列有一个20毫秒的时间片，低优先级的队列有一个30毫秒的时间片。
 
 You can separately control how much time allotment there is per queue
 too. This can be set for all queues with -a, or per queue with -A, e.g., -A
@@ -183,10 +159,12 @@ only 20 ms of CPU time to complete, and also never issues I/Os.
 
 Finally, there are three more parameters of interest. The -B flag, if set to a
 non-zero value, boosts all jobs to the highest-priority queue every N
-milliseconds, when invoked as such: 
+milliseconds, when invoked as such:
+
 ```sh
   prompt> ./mlfq.py -B N
 ```
+
 The scheduler uses this feature to avoid starvation as discussed in the
 chapter. However, it is off by default.
 
@@ -197,8 +175,8 @@ intact.  This enables gaming of the scheduler.
 
 Finally, you can easily change how long an I/O lasts by using the -i flag. By
 default in this simplistic model, each I/O takes a fixed amount of time of 5
-milliseconds or whatever you set it to with this flag. 
+milliseconds or whatever you set it to with this flag.
 
 You can also play around with whether jobs that just complete an I/O are moved
 to the head of the queue they are in or to the back, with the -I flag. Check
-it out, it's fun! 
+it out, it's fun!

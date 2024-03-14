@@ -2,6 +2,7 @@
     "files.associations": {
         "*.md": "markdown",
         "stat.h": "c",
-        "whatuneed.h": "c"
+        "whatuneed.h": "c",
+        "time.h": "c"
     }
 }
